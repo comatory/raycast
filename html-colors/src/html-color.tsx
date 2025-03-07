@@ -101,7 +101,7 @@ export default function Command() {
     <List
       searchText={searchText}
       onSearchTextChange={setSearchText}
-      searchBarPlaceholder="Search colors by name, hex, or RGB... (typos allowed)"
+      searchBarPlaceholder="Name, hex, or RGB..."
       isShowingDetail={isDetailVisible}
       searchBarAccessory={
         <List.Dropdown

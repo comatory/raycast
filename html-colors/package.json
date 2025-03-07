@@ -3,17 +3,18 @@
   "name": "html-colors",
   "title": "HTML Colors",
   "description": "Search through palletes of standard HTML colors. Offers basic + extended set. Search by name or browse by looking at the color itself.",
-  "icon": "extension-icon.png",
-  "author": "ondrej_synacek",
+  "icon": "icon.png",
+  "author": "@Synacek",
   "categories": [
-    "Developer Tools"
+    "Developer Tools",
+    "Design Tools"
   ],
   "license": "MIT",
   "commands": [
     {
       "name": "html-color",
-      "title": "HTML Color",
-      "subtitle": "Search through HTML colors",
+      "title": "Search HTML Colors",
+      "subtitle": "Find colors by name, hex, or RGB",
       "description": "Quickly find HTML colors by name, hex, or RGB. Supports fuzzy search with typos and shows both basic and extended color sets.",
       "mode": "view"
     }

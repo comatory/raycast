@@ -10,13 +10,13 @@ const searchOptions = {
   keys: [
     { name: "name", weight: 2 }, // Give more weight to name matches
     { name: "hex", weight: 1 },
-    { name: "rgb", weight: 1 }
+    { name: "rgb", weight: 1 },
   ],
   threshold: 0.5,
   distance: 150,
   includeScore: true,
   shouldSort: true,
-  minMatchCharLength: 2
+  minMatchCharLength: 2,
 };
 
 // Initialize Fuse instance with empty collection
@@ -26,41 +26,44 @@ type FuseSearchResult = { item: Color; score?: number };
 
 function filterByScore(results: FuseSearchResult[], threshold = 0.4): Color[] {
   return results
-    .filter(result => result.score && result.score < threshold)
+    .filter((result) => result.score && result.score < threshold)
     .sort((a, b) => (a.score || 0) - (b.score || 0))
-    .map(result => result.item);
+    .map((result) => result.item);
 }
 
 function createCategorySet(color: Color): Set<Color["category"]> {
   return new Set([color.category]);
 }
 
-function mergeCategoryInformation(colorMap: Map<string, { color: Color; categories: Set<Color["category"]> }>, color: Color) {
+function mergeCategoryInformation(
+  colorMap: Map<string, { color: Color; categories: Set<Color["category"]> }>,
+  color: Color,
+) {
   const existing = colorMap.get(color.name);
   if (existing) {
     existing.categories.add(color.category);
   } else {
     colorMap.set(color.name, {
       color,
-      categories: createCategorySet(color)
+      categories: createCategorySet(color),
     });
   }
 }
 
 function deduplicateByName(colors: Color[]): ColorResult[] {
   const colorMap = new Map<string, { color: Color; categories: Set<Color["category"]> }>();
-  colors.forEach(color => mergeCategoryInformation(colorMap, color));
+  colors.forEach((color) => mergeCategoryInformation(colorMap, color));
 
   return Array.from(colorMap.values()).map(({ color, categories }) => ({
     ...color,
-    categories: Array.from(categories)
+    categories: Array.from(categories),
   }));
 }
 
 function convertToColorResult(color: Color): ColorResult {
   return {
     ...color,
-    categories: [color.category]
+    categories: [color.category],
   };
 }
 
@@ -78,4 +81,4 @@ export function searchColors(colors: Color[], searchText: string): ColorResult[]
   const searchResults = searchIndex.search(searchText);
   const matchedColors = filterByScore(searchResults);
   return deduplicateByName(matchedColors);
-} 
+}

@@ -11,7 +11,7 @@ export function generateColorPreviewSvg(hexColor: string, colorName: string): st
   <rect width="200" height="150" fill="none" stroke="#ccc" stroke-width="1" rx="8" ry="8"/>
 </svg>`;
 
-  const base64Svg = Buffer.from(svg).toString('base64');
+  const base64Svg = Buffer.from(svg).toString("base64");
   return `![${colorName} Color Preview](data:image/svg+xml;base64,${base64Svg})`;
 }
 
@@ -20,9 +20,9 @@ export function generateColorPreviewSvg(hexColor: string, colorName: string): st
  * Categories are sorted to ensure basic colors appear before extended ones
  */
 export function getCategoryIcons(categories: ColorWithCategories["categories"]) {
-  const sortedCategories = [...categories].sort((a) => a === "basic" ? -1 : 1);
+  const sortedCategories = [...categories].sort((a) => (a === "basic" ? -1 : 1));
   return sortedCategories.map((category) => ({
     icon: category === "basic" ? Icon.Circle : Icon.CircleEllipsis,
-    tooltip: `${category.charAt(0).toUpperCase()}${category.slice(1)} Color`
+    tooltip: `${category.charAt(0).toUpperCase()}${category.slice(1)} Color`,
   }));
-} 
+}

@@ -5,4 +5,4 @@ import { Color } from "./constants";
  */
 export type ColorWithCategories = Omit<Color, "category"> & {
   categories: Color["category"][];
-}; 
+};

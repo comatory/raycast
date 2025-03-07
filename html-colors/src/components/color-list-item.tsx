@@ -8,13 +8,13 @@ import { ColorListItemDetail } from "./color-list-item-detail";
  * List item component for displaying a color with its details and actions.
  * Shows color name, format (HEX/RGB), preview, and category indicators.
  */
-export function ColorListItem({ 
-  color, 
-  onSelect, 
-  showHex, 
-  onToggleFormat, 
-  isDetailVisible, 
-  onToggleDetail 
+export function ColorListItem({
+  color,
+  onSelect,
+  showHex,
+  onToggleFormat,
+  isDetailVisible,
+  onToggleDetail,
 }: {
   color: ColorWithCategories;
   onSelect: (color: ColorWithCategories) => void;
@@ -42,4 +42,4 @@ export function ColorListItem({
       }
     />
   );
-} 
+}

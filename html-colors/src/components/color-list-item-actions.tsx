@@ -6,13 +6,13 @@ import type { ColorWithCategories } from "../types";
  * Actions panel component for color list items.
  * Provides actions for copying color values and toggling display options.
  */
-export function ColorListItemActions({ 
-  color, 
-  onSelect, 
-  showHex, 
-  onToggleFormat, 
-  isDetailVisible, 
-  onToggleDetail 
+export function ColorListItemActions({
+  color,
+  onSelect,
+  showHex,
+  onToggleFormat,
+  isDetailVisible,
+  onToggleDetail,
 }: {
   color: ColorWithCategories;
   onSelect: (color: ColorWithCategories) => void;
@@ -36,18 +36,9 @@ export function ColorListItemActions({
   return (
     <ActionPanel>
       <ActionPanel.Section>
-        <Action
-          title="Copy HEX to Clipboard"
-          onAction={handleHexCopy}
-        />
-        <Action
-          title="Copy RGB to Clipboard"
-          onAction={handleRgbCopy}
-        />
-        <Action
-          title="Copy Name to Clipboard"
-          onAction={handleNameCopy}
-        />
+        <Action title="Copy Hex to Clipboard" onAction={handleHexCopy} />
+        <Action title="Copy Rgb to Clipboard" onAction={handleRgbCopy} />
+        <Action title="Copy Name to Clipboard" onAction={handleNameCopy} />
       </ActionPanel.Section>
       <ActionPanel.Section>
         <Action
@@ -63,4 +54,4 @@ export function ColorListItemActions({
       </ActionPanel.Section>
     </ActionPanel>
   );
-} 
+}

@@ -24,6 +24,17 @@ export function ColorListItem({ color, onSelect, showHex, onToggleFormat, isDeta
     }));
   };
 
+  // Generate SVG for the color preview
+  const svg = `<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="150" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="150" fill="${color.hex}" rx="8" ry="8"/>
+  <rect width="200" height="150" fill="none" stroke="#ccc" stroke-width="1" rx="8" ry="8"/>
+</svg>`;
+
+  // Convert SVG to base64 and create data URI
+  const base64Svg = Buffer.from(svg).toString('base64');
+  const colorImageMarkdown = `![Color Preview](data:image/svg+xml;base64,${base64Svg})`;
+
   return (
     <List.Item
       title={color.name}
@@ -33,12 +44,9 @@ export function ColorListItem({ color, onSelect, showHex, onToggleFormat, isDeta
       detail={
         isDetailVisible ? (
           <List.Item.Detail
+            markdown={colorImageMarkdown}
             metadata={
               <List.Item.Detail.Metadata>
-                <List.Item.Detail.Metadata.Label
-                  title="Color"
-                  icon={{ source: Icon.CircleFilled, tintColor: color.hex }}
-                />
                 <List.Item.Detail.Metadata.Separator />
                 <List.Item.Detail.Metadata.Label
                   title="Categories"

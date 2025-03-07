@@ -24,6 +24,7 @@ export default function Command() {
   const [searchText, setSearchText] = useState("");
   const [colorFilter, setColorFilter] = useState<ColorFilter>("all");
   const [showHex, setShowHex] = useState(true);
+  const [isDetailVisible, setIsDetailVisible] = useState(false);
 
   const colors = useMemo(() => {
     switch (colorFilter) {
@@ -101,7 +102,7 @@ export default function Command() {
       searchText={searchText}
       onSearchTextChange={setSearchText}
       searchBarPlaceholder="Search colors by name, hex, or RGB... (typos allowed)"
-      isShowingDetail={false}
+      isShowingDetail={isDetailVisible}
       searchBarAccessory={
         <List.Dropdown
           tooltip="Color Set"
@@ -121,6 +122,8 @@ export default function Command() {
           onSelect={handleColorSelect}
           showHex={showHex}
           onToggleFormat={() => setShowHex(!showHex)}
+          isDetailVisible={isDetailVisible}
+          onToggleDetail={() => setIsDetailVisible(!isDetailVisible)}
         />
       ))}
     </List>

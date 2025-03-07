@@ -1,4 +1,4 @@
-import { List, ActionPanel, Action } from "@raycast/api";
+import { List, ActionPanel, Action, Icon } from "@raycast/api";
 import { Color } from "../constants";
 
 interface ColorListItemProps {
@@ -9,33 +9,24 @@ interface ColorListItemProps {
 }
 
 export function ColorListItem({ color, onSelect, showHex, onToggleFormat }: ColorListItemProps) {
-  const colorPreview = {
-    source: {
-      light: "color-preview-light.png",
-      dark: "color-preview-dark.png",
-    },
-  };
-
-  const categoryIcon = {
-    source: {
-      light: color.category === "Basic" ? "basic-icon-light.png" : "extended-icon-light.png",
-      dark: color.category === "Basic" ? "basic-icon-dark.png" : "extended-icon-dark.png",
-    },
-  };
-
   return (
     <List.Item
       title={color.name}
       subtitle={showHex ? color.hex : color.rgb}
       accessories={[
         {
-          icon: colorPreview,
+          icon: {
+            source: Icon.CircleFilled,
+            tintColor: color.hex,
+          },
           tooltip: "Color Preview",
         },
         {
-          icon: categoryIcon,
+          icon: {
+            source: color.category === "Basic" ? Icon.Circle : Icon.CircleEllipsis,
+          },
           tooltip: color.category,
-        },
+        }
       ]}
       actions={
         <ActionPanel>

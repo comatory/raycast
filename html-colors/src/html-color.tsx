@@ -1,25 +1,10 @@
-import { List, showToast, Toast, Icon } from "@raycast/api";
+import { List, showToast, Toast, Icon, Clipboard } from "@raycast/api";
 import { useState, useMemo } from "react";
-import { Color, basicColors, extendedColors } from "./constants";
-import { ColorListItem } from "./components/ColorListItem";
-import Fuse from "fuse.js";
-import { Clipboard } from "@raycast/api";
+import { basicColors, extendedColors } from "./constants";
+import { ColorListItem } from "./components/color-list-item";
+import { searchColors, ColorResult } from "./utils/search-utils";
 
 type ColorFilter = "all" | "basic" | "extended";
-
-// Fuzzy search
-const fuseOptions = {
-  keys: [
-    { name: "name", weight: 2 }, // Give more weight to name matches
-    { name: "hex", weight: 1 },
-    { name: "rgb", weight: 1 }
-  ],
-  threshold: 0.5,
-  distance: 150,
-  includeScore: true,
-  shouldSort: true,
-  minMatchCharLength: 2
-};
 
 export default function Command() {
   const [searchText, setSearchText] = useState("");
@@ -38,44 +23,11 @@ export default function Command() {
     }
   }, [colorFilter]);
 
-  const fuse = useMemo(() => new Fuse(colors, fuseOptions), [colors]);
-
   const filteredColors = useMemo(() => {
-    if (!searchText) return colors.map(color => ({
-      ...color,
-      categories: [color.category]
-    }));
-    
-    const results = fuse.search(searchText);
-    
-    // Filter out low-quality matches and sort by score
-    const matchedColors = results
-      .filter(result => result.score && result.score < 0.4) // Only keep good matches
-      .sort((a, b) => (a.score || 0) - (b.score || 0)) // Explicit sort by score
-      .map(result => result.item);
+    return searchColors(colors, searchText);
+  }, [colors, searchText]);
 
-    // Deduplicate colors by name while preserving category information
-    const colorMap = new Map<string, { color: Color; categories: Set<Color["category"]> }>();
-    
-    matchedColors.forEach((color) => {
-      const existing = colorMap.get(color.name);
-      if (existing) {
-        existing.categories.add(color.category);
-      } else {
-        colorMap.set(color.name, {
-          color,
-          categories: new Set([color.category])
-        });
-      }
-    });
-
-    return Array.from(colorMap.values()).map(({ color, categories }) => ({
-      ...color,
-      categories: Array.from(categories)
-    }));
-  }, [colors, searchText, fuse]);
-
-  const handleColorSelect = async (color: Omit<Color, "category"> & { categories: Color["category"][] }) => {
+  const handleColorSelect = async (color: ColorResult) => {
     let textToCopy = "";
     switch (color.format) {
       case "rgb":
@@ -116,7 +68,7 @@ export default function Command() {
     >
       {filteredColors.map((color) => (
         <ColorListItem
-          key={`${color.category}-${color.name}-${color.hex}`}
+          key={`${color.categories[0]}-${color.name}-${color.hex}`}
           color={color}
           onSelect={handleColorSelect}
           showHex={showHex}

@@ -1,4 +1,7 @@
-export interface Color {
+/**
+ * Represents a color with its various formats and category information
+ */
+export type Color = {
   name: string;
   hex: string;
   rgb: string;
@@ -8,6 +11,9 @@ export interface Color {
   id: string;
 }
 
+/**
+ * Collection of basic HTML colors with their hex, rgb, and name values
+ */
 export const basicColors: Color[] = [
   { name: "Black", hex: "#000000", rgb: "rgb(0, 0, 0)", category: "basic", format: "name", id: "black" },
   { name: "Silver", hex: "#C0C0C0", rgb: "rgb(192, 192, 192)", category: "basic", format: "name", id: "silver" },
@@ -27,6 +33,9 @@ export const basicColors: Color[] = [
   { name: "Aqua", hex: "#00FFFF", rgb: "rgb(0, 255, 255)", category: "basic", format: "name", id: "aqua" },
 ];
 
+/**
+ * Collection of extended HTML colors with their hex, rgb, and name values
+ */
 export const extendedColors: Color[] = [
   { name: "AliceBlue", hex: "#F0F8FF", rgb: "rgb(240, 248, 255)", category: "extended", format: "name", id: "aliceblue" },
   { name: "AntiqueWhite", hex: "#FAEBD7", rgb: "rgb(250, 235, 215)", category: "extended", format: "name", id: "antiquewhite" },

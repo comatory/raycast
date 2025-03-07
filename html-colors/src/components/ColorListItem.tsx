@@ -17,7 +17,7 @@ interface ColorListItemProps {
 export function ColorListItem({ color, onSelect, showHex, onToggleFormat, isDetailVisible, onToggleDetail }: ColorListItemProps) {
   const getCategoryIcons = (categories: Color["category"][]) => {
     // Sort categories to ensure consistent order (basic first, then extended)
-    const sortedCategories = [...categories].sort((a, b) => a === "basic" ? -1 : 1);
+    const sortedCategories = [...categories].sort((a) => a === "basic" ? -1 : 1);
     return sortedCategories.map((category) => ({
       icon: category === "basic" ? Icon.Circle : Icon.CircleEllipsis,
       tooltip: `${category.charAt(0).toUpperCase()}${category.slice(1)} Color`
@@ -79,15 +79,15 @@ export function ColorListItem({ color, onSelect, showHex, onToggleFormat, isDeta
         <ActionPanel>
           <ActionPanel.Section>
             <Action
-              title="Copy HEX"
+              title="Copy HEX to Clipboard"
               onAction={() => onSelect({ ...color, format: "hex" })}
             />
             <Action
-              title="Copy RGB"
+              title="Copy RGB to Clipboard"
               onAction={() => onSelect({ ...color, format: "rgb" })}
             />
             <Action
-              title="Copy Name"
+              title="Copy Name to Clipboard"
               onAction={() => onSelect({ ...color, format: "name" })}
             />
           </ActionPanel.Section>

@@ -1,4 +1,4 @@
-import { List, showToast, Toast, ActionPanel, Action, Icon } from "@raycast/api";
+import { List, showToast, Toast, Icon } from "@raycast/api";
 import { useState, useMemo } from "react";
 import { Color, basicColors, extendedColors } from "./constants";
 import { ColorListItem } from "./components/ColorListItem";
@@ -7,18 +7,18 @@ import { Clipboard } from "@raycast/api";
 
 type ColorFilter = "all" | "basic" | "extended";
 
-// Configure Fuse options for fuzzy search
+// Fuzzy search
 const fuseOptions = {
   keys: [
     { name: "name", weight: 2 }, // Give more weight to name matches
     { name: "hex", weight: 1 },
     { name: "rgb", weight: 1 }
   ],
-  threshold: 0.5, // Lower threshold = more strict matching
-  distance: 150, // How far to search for matches
+  threshold: 0.5,
+  distance: 150,
   includeScore: true,
   shouldSort: true,
-  minMatchCharLength: 2 // Require at least 2 characters to match
+  minMatchCharLength: 2
 };
 
 export default function Command() {
@@ -38,7 +38,6 @@ export default function Command() {
     }
   }, [colorFilter]);
 
-  // Initialize Fuse instance with the current color set
   const fuse = useMemo(() => new Fuse(colors, fuseOptions), [colors]);
 
   const filteredColors = useMemo(() => {
@@ -47,7 +46,6 @@ export default function Command() {
       categories: [color.category]
     }));
     
-    // Use Fuse.js for fuzzy search
     const results = fuse.search(searchText);
     
     // Filter out low-quality matches and sort by score
@@ -71,7 +69,6 @@ export default function Command() {
       }
     });
 
-    // Convert back to array, combining category information
     return Array.from(colorMap.values()).map(({ color, categories }) => ({
       ...color,
       categories: Array.from(categories)

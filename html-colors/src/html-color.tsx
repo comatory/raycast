@@ -40,19 +40,43 @@ export default function Command() {
   const fuse = useMemo(() => new Fuse(colors, fuseOptions), [colors]);
 
   const filteredColors = useMemo(() => {
-    if (!searchText) return colors;
+    if (!searchText) return colors.map(color => ({
+      ...color,
+      categories: [color.category]
+    }));
     
     // Use Fuse.js for fuzzy search
     const results = fuse.search(searchText);
     
     // Filter out low-quality matches and sort by score
-    return results
+    const matchedColors = results
       .filter(result => result.score && result.score < 0.4) // Only keep good matches
       .sort((a, b) => (a.score || 0) - (b.score || 0)) // Explicit sort by score
       .map(result => result.item);
+
+    // Deduplicate colors by name while preserving category information
+    const colorMap = new Map<string, { color: Color; categories: Set<Color["category"]> }>();
+    
+    matchedColors.forEach((color) => {
+      const existing = colorMap.get(color.name);
+      if (existing) {
+        existing.categories.add(color.category);
+      } else {
+        colorMap.set(color.name, {
+          color,
+          categories: new Set([color.category])
+        });
+      }
+    });
+
+    // Convert back to array, combining category information
+    return Array.from(colorMap.values()).map(({ color, categories }) => ({
+      ...color,
+      categories: Array.from(categories)
+    }));
   }, [colors, searchText, fuse]);
 
-  const handleColorSelect = async (color: Color) => {
+  const handleColorSelect = async (color: Omit<Color, "category"> & { categories: Color["category"][] }) => {
     let textToCopy = "";
     switch (color.format) {
       case "rgb":

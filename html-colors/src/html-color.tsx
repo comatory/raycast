@@ -3,6 +3,7 @@ import { useState, useMemo } from "react";
 import { Color, basicColors, extendedColors } from "./constants";
 import { ColorListItem } from "./components/ColorListItem";
 import Fuse from "fuse.js";
+import { Clipboard } from "@raycast/api";
 
 type ColorFilter = "all" | "basic" | "extended";
 
@@ -84,12 +85,13 @@ export default function Command() {
         textToCopy = color.rgb;
         break;
       case "name":
-        textToCopy = color.name;
+        textToCopy = color.id;
         break;
       default:
         textToCopy = color.hex;
     }
 
+    await Clipboard.copy(textToCopy);
     await showToast({
       style: Toast.Style.Success,
       title: "Color copied to clipboard",

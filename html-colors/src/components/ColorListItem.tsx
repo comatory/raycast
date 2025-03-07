@@ -59,6 +59,10 @@ export function ColorListItem({ color, onSelect, showHex, onToggleFormat, isDeta
                   text={color.name}
                 />
                 <List.Item.Detail.Metadata.Label
+                  title="Named color"
+                  text={color.id}
+                />
+                <List.Item.Detail.Metadata.Label
                   title="HEX"
                   text={color.hex}
                 />
